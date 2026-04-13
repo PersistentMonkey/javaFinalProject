@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>PayPal Spring Boot Demo</title>
+
+    <script 
+src="https://www.paypal.com/sdk/js?client-id=AXp76mR0Tu20Jt_jp9VjI1wUcth0Ohh24zZD0P6ZauC-xYLrkp5gqfFV9pb1IKbCdkIwKgOa4XgyBjVy">
+</script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -42,43 +47,29 @@
     </style>
 </head>
 <body>
+
 <div class="container">
     <h1>Basic PayPal Payment Demo</h1>
-    <p>Click the PayPal button below to simulate a payment in sandbox mode.</p>
-
-    <div id="paypal-button-container"></div>
+    <p>Click the PayPal button below to simulate a payment.</p>
+<!-- ✅ HOSTED BUTTON CONTAINER -->
+    <div id="paypal-container-JTRJCWKB3A5CW"></div>
     <div id="result"></div>
 </div>
 
-<script src="https://www.paypal.com/sdk/js?client-id=YOUR_SANDBOX_CLIENT_ID&currency=USD"></script>
-<script>
-    paypal.Buttons({
-        createOrder: async function () {
-            const response = await fetch('/api/paypal/create-order', {
-                method: 'POST'
-            });
-
-            const data = await response.json();
-            return data.id;
-        },
-
-        onApprove: async function (data) {
-            const response = await fetch('/api/paypal/capture-order/' + data.orderID, {
-                method: 'POST'
-            });
-
-            const result = await response.json();
-
-            document.getElementById('result').innerText =
-                'Payment Successful!\n\n' + JSON.stringify(result, null, 2);
-        },
-
-        onError: function (err) {
+<script> <!-- ✅ RENDER HOSTED BUTTON-->
+    if (typeof paypal === "undefined") {
+        document.getElementById("result").innerText = "PayPal SDK did not load.";
+    } else {
+        paypal.HostedButtons({
+            hostedButtonId: "JTRJCWKB3A5CW"
+        }).render("#paypal-container-JTRJCWKB3A5CW")
+        .catch(function (err) {
             console.error(err);
-            document.getElementById('result').innerText =
-                'An error occurred during payment.';
-        }
-    }).render('#paypal-button-container');
+            document.getElementById("result").innerText =
+                "Failed to load hosted PayPal button.";
+        });
+    }
 </script>
+
 </body>
 </html>
