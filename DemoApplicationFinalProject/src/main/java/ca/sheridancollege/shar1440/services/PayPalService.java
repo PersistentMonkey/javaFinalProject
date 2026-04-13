@@ -58,8 +58,8 @@ public class PayPalService {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         Map<String, Object> amount = new HashMap<>();
-        amount.put("currency_code", "USD");
-        amount.put("value", "10.00");
+        amount.put("currency_code", "CAD");
+        amount.put("value", "1.00");
 
         Map<String, Object> purchaseUnit = new HashMap<>();
         purchaseUnit.put("amount", amount);
